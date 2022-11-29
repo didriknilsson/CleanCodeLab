@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanCodeLab
+namespace CleanCodeLab.Data
 {
-    public class DataHandler
+    public interface IDataHandler
     {
     }
 }

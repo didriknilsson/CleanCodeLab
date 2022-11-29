@@ -8,5 +8,7 @@ namespace CleanCodeLab
 {
     public class Player
     {
+        public int TotalGuesses { get; set; }
+        public int NumberOfGuesses { get; set; }
     }
 }

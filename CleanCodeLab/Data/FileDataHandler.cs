@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab
 {
-    public class MooGame
+    public class FileDataHandler
     {
     }
 }
