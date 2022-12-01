@@ -8,5 +8,8 @@ namespace CleanCodeLab
 {
     public interface IGame
     {
+        public string CreateTargetToGuess();
+        public string CheckPlayerGuess(string playerGuess, string targetToGuess);
+
     }
 }

@@ -18,9 +18,14 @@ namespace CleanCodeLabUnitTest
             Assert.AreEqual(0, player.TotalGuesses);
         }
         [TestMethod()]
-        public void NumberOfGuessesIsZeroOnStart()
+        public void NumberOfGamesIsZeroOnStart()
         {
-            Assert.AreEqual(0, player.NumberOfGuesses);
+            Assert.AreEqual(0, player.NumberOfGames);
+        }
+        [TestMethod]
+        public void PlayerNameNullAsDefault()
+        {
+            Assert.AreEqual(null, player.Name);
         }
     }
 }

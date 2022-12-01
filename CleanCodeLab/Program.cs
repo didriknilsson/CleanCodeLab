@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CleanCodeLab
 {
@@ -53,40 +54,72 @@ namespace CleanCodeLab
 			string goal = "";
 			for (int i = 0; i < 4; i++)
 			{
-				int random = randomGenerator.Next(10);
-				string randomDigit = "" + random;
-				while (goal.Contains(randomDigit))
+				string random = randomGenerator.Next(10).ToString();
+				//string randomDigit = "" + random;
+				while (goal.Contains(random))
 				{
-					random = randomGenerator.Next(10);
-					randomDigit = "" + random;
+					random = randomGenerator.Next(10).ToString();
+					//randomDigit = "" + random;
 				}
-				goal = goal + randomDigit;
+				goal = goal + random;
 			}
 			return goal;
 		}
 
 		static string checkBC(string goal, string guess)
 		{
-			int cows = 0, bulls = 0;
-			guess += "    ";     // if player entered less than 4 chars
-			for (int i = 0; i < 4; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					if (goal[i] == guess[j])
-					{
-						if (i == j)
-						{
-							bulls++;
-						}
-						else
-						{
-							cows++;
-						}
-					}
-				}
-			}
-			return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
+            //int cows = 0, bulls = 0;
+            //guess += "    ";     // if player entered less than 4 chars
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    for (int j = 0; j < 4; j++)
+            //    {
+            //        if (goal[i] == guess[j])
+            //        {
+            //            if (i == j)
+            //            {
+            //                bulls++;
+            //            }
+            //            else
+            //            {
+            //                cows++;
+            //            }
+            //        }
+            //    }
+            //}
+            int cows = 0, bulls = 0;
+            guess += "    ";
+            char[] playerGuessCharArray = guess.ToCharArray();
+            char[] targetGuessCharArray = goal.ToCharArray();
+            foreach (var targetGuessChar in targetGuessCharArray.Where(targetGuessChar => playerGuessCharArray.Contains(targetGuessChar)))
+            {
+                if (Array.IndexOf(playerGuessCharArray, targetGuessChar) == Array.IndexOf(targetGuessCharArray, targetGuessChar))
+                {
+                    bulls++;
+                }
+                else
+                {
+                    cows++;
+                }
+            }
+            //      foreach (var targetGuessChar in targetGuessCharArray)
+            //      {
+            //          if (playerGuessCharArray.Contains(targetGuessChar))
+            //          {
+
+            //              if(Array.IndexOf(playerGuessCharArray, targetGuessChar) == Array.IndexOf(targetGuessCharArray, targetGuessChar))
+            //              {
+            //bulls++;
+            //              }
+            //              else
+            //              {
+            //cows++;
+            //              }
+            //          }
+
+            //      }
+
+            return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
 		}
 
 

@@ -8,5 +8,8 @@ namespace CleanCodeLab
 {
     public interface IUI
     {
+        void Output(string output);
+        string Input();
+        void ExitGame();
     }
 }
