@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace MooGame
+namespace CleanCodeLab
 {
 	class MainClass
 	{
@@ -37,7 +37,7 @@ namespace MooGame
 				}
 				StreamWriter output = new StreamWriter("result.txt", append: true);
 				output.WriteLine(name + "#&#" + nGuess);
-				output.Close();
+				output.Close();                                                                                                                                                                                                
 				showTopList();
 				Console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue?");
 				string answer = Console.ReadLine();
