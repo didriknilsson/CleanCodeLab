@@ -8,9 +8,10 @@ namespace CleanCodeLab
 {
     public interface IGame
     {
-        public string CreateTargetToGuess();
-        public string CheckGuess(string target, string guess);
-        public bool ShouldGameContinue();
+        public int PlayGame();
+        public void CreateTargetToGuess();
+        public string CheckGuess(string guess);
+        public bool ShouldGameContinue(string result);
 
     }
 }

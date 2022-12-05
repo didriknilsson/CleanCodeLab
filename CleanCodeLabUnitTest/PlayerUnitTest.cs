@@ -11,7 +11,7 @@ namespace CleanCodeLabUnitTest
     [TestClass()]
     public class PlayerUnitTest
     {
-        Player player = new Player();
+        Player player = new PlayerData();
         [TestMethod()]
         public void TotalGuessesIsZeroOnStart()
         {

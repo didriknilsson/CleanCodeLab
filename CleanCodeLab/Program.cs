@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using CleanCodeLab.Factories;
 
 namespace CleanCodeLab
 {
@@ -9,6 +10,12 @@ namespace CleanCodeLab
 
 		public static void Main(string[] args)
 		{
+			IUI ui = new ConsoleIO();
+			GameFactory factory = new GameFactory();
+			var controller = new GamesController(ui, factory);
+			controller.Run();
+
+
 
 			bool playOn = true;
 			Console.WriteLine("Enter your user name:\n");
