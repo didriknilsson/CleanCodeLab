@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanCodeLab.Data
+namespace CleanCodeLab.Converters
 {
-    public interface IDataHandler
+    public interface IDataConverter
     {
-       
+
     }
 }

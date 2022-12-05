@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab
 {
-    public class MooGame
+    public class MooGame : IGame
     {
+
+        public string CheckGuess(string target, string guess)
+        {
+            throw new NotImplementedException();
+        }
+
         public string CreateTargetToGuess()
         {
 			Random randomGenerator = new Random();
@@ -25,5 +31,10 @@ namespace CleanCodeLab
 			}
 			return goal;
 		}
+
+        public bool ShouldGameContinue()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
