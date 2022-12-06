@@ -8,7 +8,7 @@ namespace CleanCodeLab.Data
 {
     public interface IDataHandler
     {
-        public List<Player> GetScores(string chosenGame);
+        public List<PlayerData> GetScores(string chosenGame);
         public void PostScore(string Name, int numberOfGuesses, string chosenGame);
 
     }

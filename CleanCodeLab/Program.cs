@@ -116,9 +116,7 @@ namespace CleanCodeLab
 				else
 				{
 					results[pos].Update(guesses);
-				}
-				
-				
+				}							
 			}
 			results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
 			Console.WriteLine("Player   games average");
