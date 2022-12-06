@@ -128,7 +128,7 @@ namespace CleanCodeLab
 		}
 	}
 
-	class PlayerData
+	public class PlayerData
 	{
 		public string Name { get; private set; }
         public int NGames { get; private set; }

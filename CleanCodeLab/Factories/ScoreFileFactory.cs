@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab.Factories
 {
-    internal class ScoreFileFactory
+    public class ScoreFileFactory
     {
+        public static string GetFilePath(string game)
+        {
+            switch (game)
+            {
+                case "moogame":
+                    return "moogame.txt";
+                case "mastermind":
+                    throw new NotImplementedException("Game does not exist");
+                default:
+                    throw new Exception();
+            }
+
+        }
     }
 }
