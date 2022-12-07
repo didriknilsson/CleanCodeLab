@@ -8,8 +8,8 @@ namespace CleanCodeLab.Data
 {
     public interface IDataHandler
     {
-        public List<PlayerData> GetScores(string chosenGame);
-        public void SaveScore(string Name, int numberOfGuesses, string chosenGame);
+        public List<PlayerData> GetAllScores(string chosenGame);
+        public void SavePlayersScore(string Name, int numberOfGuesses, string chosenGame);
 
     }
 }

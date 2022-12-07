@@ -11,6 +11,8 @@ namespace CleanCodeLab
         public void Output(string output);
         public string Input();
         public void OutputList(List<string> output);
+        public void OutputScoreBoard(List<PlayerData> output);
+
 
     }
 }

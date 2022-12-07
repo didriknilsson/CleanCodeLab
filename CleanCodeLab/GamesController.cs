@@ -1,5 +1,4 @@
-﻿using CleanCodeLab.Converters;
-using CleanCodeLab.Data;
+﻿using CleanCodeLab.Data;
 using CleanCodeLab.Factories;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace CleanCodeLab
     {
         private IUI _ui;
         private IDataHandler _dataHandler;
-        //private IDataConverter _dataConverter;
         private GameFactory _gameFactory;
         private IGame _game;
 
@@ -22,7 +20,6 @@ namespace CleanCodeLab
         {
             _ui = ui;
             _dataHandler = dataHandler;
-            //_dataConverter = dataConverter;
             _gameFactory = gameFactory;
         }
 
@@ -48,8 +45,9 @@ namespace CleanCodeLab
 
                 _game = _gameFactory.CreateGame(chosenGame, _ui);
                 int numberOfGuesses = _game.PlayGame();
-                _dataHandler.SaveScore(playerName, numberOfGuesses, chosenGame);
-                List<PlayerData> scoreBoard = _dataHandler.GetScores(chosenGame); // Namgivning!!
+                _dataHandler.SavePlayersScore(playerName, numberOfGuesses, chosenGame);
+                List<PlayerData> scoreBoard = _dataHandler.GetAllScores(chosenGame);
+                _ui.OutputScoreBoard(scoreBoard);
                
                 _ui.Output($"Correct, it took {numberOfGuesses} guesses \n Do you want to play a game again? yes/no");
                 string playerChoice = _ui.Input();

@@ -11,11 +11,11 @@ namespace CleanCodeLab
     public class FileDataHandler : IDataHandler
     {
         private string _filePath;
-        public FileDataHandler(string filePath) // varför vill vi ha filePath här? För att vi använder det på flera ställen i projektet?
+        public FileDataHandler()
         {
-            _filePath = filePath;
+            
         }
-        public List<PlayerData> GetScores(string chosenGame)
+        public List<PlayerData> GetAllScores(string chosenGame)
         {
             _filePath = ScoreFileFactory.GetFilePath(chosenGame);
             StreamReader scores = new StreamReader(_filePath);
@@ -24,7 +24,7 @@ namespace CleanCodeLab
 
         }
 
-        public void PostScore(string name, int numberOfGuesses, string chosenGame)
+        public void SavePlayersScore(string name, int numberOfGuesses, string chosenGame)
         {
             _filePath = ScoreFileFactory.GetFilePath(chosenGame);
             StreamWriter output = new StreamWriter(_filePath, append: true);
@@ -52,6 +52,7 @@ namespace CleanCodeLab
                 }
             }
             results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            scores.Close();
             return results;
         }
     }

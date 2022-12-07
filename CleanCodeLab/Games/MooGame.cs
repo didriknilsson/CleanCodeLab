@@ -8,9 +8,9 @@ namespace CleanCodeLab
 {
     public class MooGame : IGame
     {
-        private IUI _ui;
-        private int _numberOfGuesses { get; set; }
-        private string _targetToGuess { get; set; }
+        private readonly IUI _ui;
+        private int _numberOfGuesses;
+        private string _targetToGuess;
         public MooGame(IUI ui)
         {
             _ui = ui;
@@ -60,9 +60,11 @@ namespace CleanCodeLab
         {
             bool continueGame = true;
             _ui.Output("New game:\n");
+            CreateTargetToGuess();
+            Console.WriteLine("For practice, number is: " + _targetToGuess + "\n");
+
             while (continueGame)
             {
-                CreateTargetToGuess();
                 string playerGuess = _ui.Input();
                 string result = CheckGuess(playerGuess);
                 _ui.Output(result + "\n");
@@ -73,7 +75,7 @@ namespace CleanCodeLab
 
         public bool ShouldGameContinue(string result)
         {
-            if (result == "BBBB")
+            if (result == "BBBB,")
                 return false;
             else
                 return true;
