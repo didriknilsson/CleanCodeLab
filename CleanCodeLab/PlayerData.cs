@@ -13,7 +13,7 @@ namespace CleanCodeLab
         public int NumberOfGamesPlayed { get; set; }
         public PlayerData(string name, int guesses)
         {
-            this.Name = name;
+            Name = name;
             NumberOfGamesPlayed = 1;
             TotalGuesses = guesses;
         }

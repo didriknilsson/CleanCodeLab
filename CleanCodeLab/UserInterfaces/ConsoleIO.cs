@@ -11,7 +11,7 @@ namespace CleanCodeLab
     {
         public void Output(string output)
         {
-            Console.WriteLine(output);
+            Console.WriteLine(output + "\n");
         }
 
         public string Input()
@@ -19,7 +19,7 @@ namespace CleanCodeLab
             return Console.ReadLine();
         }
 
-        public void OutputList(List<string> output)
+        public void OutputGameNames(List<string> output)
         {
             IEnumerator enumerator = output.GetEnumerator();
             while(enumerator.MoveNext())
@@ -30,12 +30,16 @@ namespace CleanCodeLab
 
         public void OutputScoreBoard(List<PlayerData> output)
         {
-            output.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
             Console.WriteLine("Player   games average");
             foreach (PlayerData p in output)
             {
                 Console.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumberOfGamesPlayed, p.Average()));
             }
+        }
+
+        public void Exit()
+        {
+            Environment.Exit(0);
         }
     }
 }

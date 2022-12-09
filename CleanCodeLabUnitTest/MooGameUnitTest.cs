@@ -7,7 +7,7 @@ namespace CleanCodeLabUnitTest
     [TestClass]
     public class MooGameUnitTest
     {
-        MooGame mooGame = new MooGame();
+        Moo mooGame = new MooGame();
         [TestMethod()]
         public void MooGameTargetToGuessIsFourDigits()
         {

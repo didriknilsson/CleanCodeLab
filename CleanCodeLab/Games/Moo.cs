@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab
 {
-    public class MooGame : IGame
+    public class Moo : IGame
     {
+        public string Name { get; set; } = "Moo"; // ska den heta moo
         private readonly IUI _ui;
         private int _numberOfGuesses;
         private string _targetToGuess;
-        public MooGame(IUI ui)
+        public Moo(IUI ui)
         {
             _ui = ui;
         }
@@ -58,14 +59,15 @@ namespace CleanCodeLab
 
         public int PlayGame()
         {
+            _numberOfGuesses = 0;
             bool continueGame = true;
-            _ui.Output("New game:\n");
+            _ui.Output("New game:");
             CreateTargetToGuess();
-            Console.WriteLine("For practice, number is: " + _targetToGuess + "\n");
+            Console.WriteLine("For practice, number is: " + _targetToGuess); // DENNA SKA BORT INNAINLÄMNING
 
             while (continueGame)
             {
-                string playerGuess = _ui.Input();
+                string playerGuess = _ui.Input().Trim();
                 string result = CheckGuess(playerGuess);
                 _ui.Output(result + "\n");
                 continueGame = ShouldGameContinue(result);

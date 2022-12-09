@@ -8,32 +8,31 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab
 {
-    public class FileDataHandler : IDataHandler
+    public class FileDataHandler : IGameDataHandler
     {
-        private string _filePath;
+        private string? _filePath;
         public FileDataHandler()
         {
             
         }
-        public List<PlayerData> GetAllScores(string chosenGame)
+        public List<PlayerData> GetAllUserAverageScores(string chosenGame)
         {
-            _filePath = ScoreFileFactory.GetFilePath(chosenGame);
+            _filePath = $"{chosenGame}.txt";
             StreamReader scores = new StreamReader(_filePath);
 
             return ConvertToPlayerData(scores);
-
         }
 
         public void SavePlayersScore(string name, int numberOfGuesses, string chosenGame)
         {
-            _filePath = ScoreFileFactory.GetFilePath(chosenGame);
+            _filePath = $"{chosenGame}.txt";
             StreamWriter output = new StreamWriter(_filePath, append: true);
             output.WriteLine(name + "#&#" + numberOfGuesses);
             output.Close();
         }
         public List<PlayerData> ConvertToPlayerData(StreamReader scores)
         {
-            List<PlayerData> results = new List<PlayerData>();
+            List<PlayerData> scoreBoard = new List<PlayerData>();
             string line;
             while ((line = scores.ReadLine()) != null)
             {
@@ -41,19 +40,19 @@ namespace CleanCodeLab
                 string name = nameAndScore[0];
                 int guesses = Convert.ToInt32(nameAndScore[1]);
                 PlayerData pd = new PlayerData(name, guesses);
-                int pos = results.IndexOf(pd);
+                int pos = scoreBoard.IndexOf(pd);
                 if (pos < 0)
                 {
-                    results.Add(pd);
+                    scoreBoard.Add(pd);
                 }
                 else
                 {
-                    results[pos].Update(guesses);
+                    scoreBoard[pos].Update(guesses);
                 }
             }
-            results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            scoreBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
             scores.Close();
-            return results;
+            return scoreBoard;
         }
     }
 }
