@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace CleanCodeLab.Games
 
         private readonly IUI _ui;
         private int _numberOfGuesses;
-        private string _targetToGuess;
+        private string? _targetToGuess;
         public MasterMind(IUI ui)
         {
             _ui = ui;
@@ -21,25 +22,24 @@ namespace CleanCodeLab.Games
         public string CheckGuess(string playerGuess)
         {
             _numberOfGuesses++;
-            int white = 0, black = 0;
             if (playerGuess.Length < 4)
             {
                 playerGuess += "    ";
             }
             char[] playerGuessCharArray = playerGuess.ToCharArray();
-            char[] targetGuessCharArray = _targetToGuess.ToCharArray();
-            foreach (var targetGuessChar in targetGuessCharArray.Where(targetGuessChar => playerGuessCharArray.Contains(targetGuessChar)))
-            {
-                if (Array.IndexOf(playerGuessCharArray, targetGuessChar) == Array.IndexOf(targetGuessCharArray, targetGuessChar))
-                {
-                    black++;
-                }
-                else
-                {
-                    white++;
-                }
-            }
-            return "BBBB".Substring(0, black) + "," + "WWWW".Substring(0, white);
+            char[] targetGuessCharArray = _targetToGuess!.ToCharArray();
+            var black = playerGuessCharArray
+                            .Zip(targetGuessCharArray, (guess, target) => guess == target)
+                            .Count(z => z);
+
+            var white = playerGuessCharArray
+                            .Intersect(targetGuessCharArray)
+                            .Sum(c =>
+                                System.Math.Min(
+                                    targetGuessCharArray.Count(x => x == c),
+                                    playerGuessCharArray.Count(x => x == c))) - black;
+
+            return "BBBB".Substring(0, black) + "," + "CCCC".Substring(0, white);
         }
 
         public void CreateTargetToGuess()
@@ -57,18 +57,20 @@ namespace CleanCodeLab.Games
         public int PlayGame()
         {
             _numberOfGuesses = 0;
-            bool continueGame = true;
+            bool continueGame;
             _ui.Output("New game:");
             CreateTargetToGuess();
             Console.WriteLine("For practice, number is: " + _targetToGuess); // DENNA SKA BORT INNAINLÄMNING
 
-            while (continueGame)
+            do
             {
                 string playerGuess = _ui.Input().Trim();
                 string result = CheckGuess(playerGuess);
                 _ui.Output(result);
                 continueGame = ShouldGameContinue(result);
-            }
+
+            } while (continueGame);
+            
             return _numberOfGuesses;
         }
 

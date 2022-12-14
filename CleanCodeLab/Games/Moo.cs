@@ -8,10 +8,10 @@ namespace CleanCodeLab
 {
     public class Moo : IGame
     {
-        public string Name { get; set; } = "Moo"; // ska den heta moo
+        public string Name { get; set; } = "Moo";
         private readonly IUI _ui;
         private int _numberOfGuesses;
-        private string _targetToGuess;
+        private string? _targetToGuess;
         public Moo(IUI ui)
         {
             _ui = ui;
@@ -20,24 +20,22 @@ namespace CleanCodeLab
         public string CheckGuess(string playerGuess)
         {
             _numberOfGuesses++;
-            int cows = 0, bulls = 0;
             if (playerGuess.Length < 4)
             {
                 playerGuess += "    ";
             }
             char[] playerGuessCharArray = playerGuess.ToCharArray();
-            char[] targetGuessCharArray = _targetToGuess.ToCharArray();
-            foreach (var targetGuessChar in targetGuessCharArray.Where(targetGuessChar => playerGuessCharArray.Contains(targetGuessChar)))
-            {
-                if (Array.IndexOf(playerGuessCharArray, targetGuessChar) == Array.IndexOf(targetGuessCharArray, targetGuessChar))
-                {
-                    bulls++;
-                }
-                else
-                {
-                    cows++;
-                }
-            }
+            char[] targetGuessCharArray = _targetToGuess!.ToCharArray();
+            var bulls = playerGuessCharArray
+                            .Zip(targetGuessCharArray, (guess, target) => guess == target)
+                            .Count(z => z);
+
+            var cows = playerGuessCharArray
+                            .Intersect(targetGuessCharArray)
+                            .Sum(c =>
+                                System.Math.Min(
+                                    targetGuessCharArray.Count(x => x == c),
+                                    playerGuessCharArray.Count(x => x == c))) - bulls;
             return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
         }
 
@@ -69,7 +67,7 @@ namespace CleanCodeLab
             {
                 string playerGuess = _ui.Input().Trim();
                 string result = CheckGuess(playerGuess);
-                _ui.Output(result + "\n");
+                _ui.Output(result);
                 continueGame = ShouldGameContinue(result);
             }
             return _numberOfGuesses;

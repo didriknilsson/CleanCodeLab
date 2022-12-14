@@ -11,7 +11,7 @@ namespace CleanCodeLabUnitTest
     [TestClass()]
     public class PlayerUnitTest
     {
-        PlayerData player = new PlayerData();
+        PlayerData player = new PlayerData("amanda", 3);
         [TestMethod()]
         public void TotalGuessesIsZeroOnStart()
         {
@@ -20,7 +20,7 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void NumberOfGuessesIsZeroOnStart()
         {
-            Assert.AreEqual(0, player.NumberOfGuesses);
+            Assert.AreEqual(0, player.TotalGuesses);
         }
     }
 }
