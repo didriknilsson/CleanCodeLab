@@ -21,6 +21,7 @@ namespace CleanCodeLab.Games
 
         public string CheckGuess(string playerGuess)
         {
+            //Denna måste göras om, det ska komma ut i rätt ordning vilken som är på rätt plats osv
             _numberOfGuesses++;
             if (playerGuess.Length < 4)
             {
@@ -65,9 +66,9 @@ namespace CleanCodeLab.Games
             do
             {
                 string playerGuess = _ui.Input().Trim();
-                string result = CheckGuess(playerGuess);
-                _ui.Output(result);
-                continueGame = ShouldGameContinue(result);
+                string blacksAndWhites = CheckGuess(playerGuess);
+                _ui.Output(blacksAndWhites);
+                continueGame = ShouldGameContinue(blacksAndWhites);
 
             } while (continueGame);
             

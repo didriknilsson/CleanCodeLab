@@ -66,9 +66,9 @@ namespace CleanCodeLab
             while (continueGame)
             {
                 string playerGuess = _ui.Input().Trim();
-                string result = CheckGuess(playerGuess);
-                _ui.Output(result);
-                continueGame = ShouldGameContinue(result);
+                string bullsAndCows = CheckGuess(playerGuess);
+                _ui.Output(bullsAndCows);
+                continueGame = ShouldGameContinue(bullsAndCows);
             }
             return _numberOfGuesses;
         }

@@ -32,7 +32,7 @@ namespace CleanCodeLab
             List<PlayerData> scoreBoard = new List<PlayerData>();
             foreach (var score in scoreList)
             {
-                PlayerData playerData = ParseScore(score);
+                PlayerData playerData = ParsePlayerAndScore(score);
                 int pos = scoreBoard.IndexOf(playerData);
                 if (pos < 0)
                 {
@@ -43,11 +43,18 @@ namespace CleanCodeLab
                     scoreBoard[pos].Update(playerData.TotalGuesses);
                 }
             }
-            scoreBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+
+            scoreBoard = SortAndCalculateAvergeForScoreBoard(scoreBoard);
             return scoreBoard;
         }
 
-        public static PlayerData ParseScore(string score)
+        private static List<PlayerData> SortAndCalculateAvergeForScoreBoard(List<PlayerData> scoreBoard)
+        {
+                scoreBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            return scoreBoard;
+        }
+
+        public static PlayerData ParsePlayerAndScore(string score)
         {
             string[] nameAndScore = score.Split(new string[] { "#&#" }, StringSplitOptions.None);
             string name = nameAndScore[0];
@@ -74,6 +81,7 @@ namespace CleanCodeLab
             output.WriteLine(name + "#&#" + numberOfGuesses);
             output.Close();
         }
+
         public List<PlayerData> ConvertToPlayerData(StreamReader scores)
         {
             List<PlayerData> scoreBoard = new List<PlayerData>();
@@ -81,9 +89,9 @@ namespace CleanCodeLab
             while ((line = scores.ReadLine()) != null)
             {
                 //skriv ett test för detta start. så att man kan testa med test indata tex på en fil som inte finns. Bryta ut så att man kan göra delarna testbara.
-                string name;
-                int guesses;
-                NewMethod(line, out name, out guesses);
+                string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
+                string name = nameAndScore[0];
+                int guesses = Convert.ToInt32(nameAndScore[1]);
                 // slut
                 PlayerData pd = new PlayerData(name, guesses);
                 int pos = scoreBoard.IndexOf(pd);
@@ -99,13 +107,6 @@ namespace CleanCodeLab
             scoreBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
             scores.Close();
             return scoreBoard;
-        }
-
-        private static void NewMethod(string line, out string name, out int guesses)
-        {
-            string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-            name = nameAndScore[0];
-            guesses = Convert.ToInt32(nameAndScore[1]);
         }
     }
 }
