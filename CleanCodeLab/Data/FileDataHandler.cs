@@ -17,11 +17,20 @@ namespace CleanCodeLab
         }
         public List<PlayerData> GetAllUserAverageScores(string chosenGame)
         {
+            StreamReader scoresStreamReader;
             _filePath = $"{chosenGame}.txt";
-            StreamReader scoresStreamReader = new StreamReader(_filePath);
+            try
+            {
+                scoresStreamReader = new StreamReader(_filePath);
+            }
+            catch
+            {
+                return new List<PlayerData>();
+            }
 
             List<string> scores = GetScoreList(scoresStreamReader);
             List<PlayerData> scoreBoard = ConvertToScoreBoard(scores);
+
 
 
             return scoreBoard; // dålig namn givning, den läser och konverterar. Ska man dela upp så att man har en läs, och en konvertera?

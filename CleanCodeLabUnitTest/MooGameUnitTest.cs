@@ -19,7 +19,7 @@ namespace CleanCodeLabUnitTest
         public void TestScoreParserPlayerName()
         {
             string testscore = "amanda#&#3";
-            PlayerData actualPlayerData = FileDataHandler.ParseScore(testscore);
+            PlayerData actualPlayerData = FileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);            
         }
@@ -27,7 +27,7 @@ namespace CleanCodeLabUnitTest
         public void TestScoreParserPlayerScore()
         {
             string testscore = "amanda#&#3";
-            PlayerData actualPlayerData = FileDataHandler.ParseScore(testscore);
+            PlayerData actualPlayerData = FileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
         }
@@ -37,7 +37,7 @@ namespace CleanCodeLabUnitTest
         public void TestScoreParserPlayer(string testscore, string expectedPlayerName, int expectedTotalGuesses)
         {
   
-            PlayerData actualPlayerData = FileDataHandler.ParseScore(testscore);
+            PlayerData actualPlayerData = FileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData(expectedPlayerName, expectedTotalGuesses);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
