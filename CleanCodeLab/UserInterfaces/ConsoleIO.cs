@@ -28,7 +28,7 @@ namespace CleanCodeLab
             }
         }
 
-        public void OutputScoreBoard(List<PlayerData> output)
+        public void OutputLeaderBoard(List<PlayerData> output)
         {
             Console.WriteLine("Player   games average");
             foreach (PlayerData p in output)

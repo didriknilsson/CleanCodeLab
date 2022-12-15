@@ -10,8 +10,8 @@ namespace CleanCodeLab
     {
         public void Output(string output);
         public string Input();
-        public void OutputGameNames(List<string> output);
-        public void OutputScoreBoard(List<PlayerData> output);
+        public void OutputGameNames(List<string> names);
+        public void OutputLeaderBoard(List<PlayerData> leaderBoard);
         public void Exit();
 
     }

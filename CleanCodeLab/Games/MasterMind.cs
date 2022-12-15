@@ -10,10 +10,9 @@ namespace CleanCodeLab.Games
     internal class MasterMind : IGame
     {
         public string Name { get; set; } = "MasterMind";
-
         private readonly IUI _ui;
         private int _numberOfGuesses;
-        private string? _targetToGuess;
+        private string _targetToGuess = "";
         public MasterMind(IUI ui)
         {
             _ui = ui;

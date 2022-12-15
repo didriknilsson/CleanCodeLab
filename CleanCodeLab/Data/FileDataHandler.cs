@@ -10,18 +10,17 @@ namespace CleanCodeLab
 {
     public class FileDataHandler : IGameDataHandler
     {
-        private string? _filePath;
         public FileDataHandler()
         {
             
         }
-        public List<PlayerData> GetAllUserAverageScores(string chosenGame)
+        public List<PlayerData> GetLeaderBoard(string chosenGame)
         {
             StreamReader scoresStreamReader;
-            _filePath = $"{chosenGame}.txt";
+            string filePath = $"{chosenGame}.txt";
             try
             {
-                scoresStreamReader = new StreamReader(_filePath);
+                scoresStreamReader = new StreamReader(filePath);
             }
             catch
             {
@@ -29,41 +28,39 @@ namespace CleanCodeLab
             }
 
             List<string> scores = GetScoreList(scoresStreamReader);
-            List<PlayerData> scoreBoard = ConvertToScoreBoard(scores);
+            List<PlayerData> leaderBoard = ConvertToLeaderBoard(scores);
 
-
-
-            return scoreBoard; // dålig namn givning, den läser och konverterar. Ska man dela upp så att man har en läs, och en konvertera?
+            return leaderBoard; 
         }
 
-        private List<PlayerData> ConvertToScoreBoard(List<string> scoreList)
+        private List<PlayerData> ConvertToLeaderBoard(List<string> scoreList)
         {
-            List<PlayerData> scoreBoard = new List<PlayerData>();
+            List<PlayerData> leaderBoard = new List<PlayerData>();
             foreach (var score in scoreList)
             {
                 PlayerData playerData = ParsePlayerAndScore(score);
-                int pos = scoreBoard.IndexOf(playerData);
+                int pos = leaderBoard.IndexOf(playerData);
                 if (pos < 0)
                 {
-                    scoreBoard.Add(playerData);
+                    leaderBoard.Add(playerData);
                 }
                 else
                 {
-                    scoreBoard[pos].Update(playerData.TotalGuesses);
+                    leaderBoard[pos].Update(playerData.TotalGuesses);
                 }
             }
 
-            scoreBoard = SortAndCalculateAvergeForScoreBoard(scoreBoard);
-            return scoreBoard;
+            leaderBoard = CalculateLeaderBoard(leaderBoard);
+            return leaderBoard;
         }
 
-        private static List<PlayerData> SortAndCalculateAvergeForScoreBoard(List<PlayerData> scoreBoard)
+        private List<PlayerData> CalculateLeaderBoard(List<PlayerData> leaderBoard)
         {
-                scoreBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-            return scoreBoard;
+            leaderBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            return leaderBoard;
         }
 
-        public static PlayerData ParsePlayerAndScore(string score)
+        public PlayerData ParsePlayerAndScore(string score)
         {
             string[] nameAndScore = score.Split(new string[] { "#&#" }, StringSplitOptions.None);
             string name = nameAndScore[0];
@@ -85,37 +82,10 @@ namespace CleanCodeLab
 
         public void SavePlayersScore(string name, int numberOfGuesses, string chosenGame)
         {
-            _filePath = $"{chosenGame}.txt";
-            StreamWriter output = new StreamWriter(_filePath, append: true);
+            string filePath = $"{chosenGame}.txt";
+            StreamWriter output = new StreamWriter(filePath, append: true);
             output.WriteLine(name + "#&#" + numberOfGuesses);
             output.Close();
-        }
-
-        public List<PlayerData> ConvertToPlayerData(StreamReader scores)
-        {
-            List<PlayerData> scoreBoard = new List<PlayerData>();
-            string line;
-            while ((line = scores.ReadLine()) != null)
-            {
-                //skriv ett test för detta start. så att man kan testa med test indata tex på en fil som inte finns. Bryta ut så att man kan göra delarna testbara.
-                string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-                string name = nameAndScore[0];
-                int guesses = Convert.ToInt32(nameAndScore[1]);
-                // slut
-                PlayerData pd = new PlayerData(name, guesses);
-                int pos = scoreBoard.IndexOf(pd);
-                if (pos < 0)
-                {
-                    scoreBoard.Add(pd);
-                }
-                else
-                {
-                    scoreBoard[pos].Update(guesses);
-                }
-            }
-            scoreBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-            scores.Close();
-            return scoreBoard;
         }
     }
 }

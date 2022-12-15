@@ -30,9 +30,9 @@ namespace CleanCodeLab
             _ui.Output("Enter your user name:");
             playerName = _ui.Input().Trim();
             bool keepPlaying = true;
-            string chosenGame = "";
             do
             {
+                string chosenGame;
                 _ui.Output("Avalible game(s):");
                 _ui.OutputGameNames(_gameFactory.GetGameNames());
                 _ui.Output("Please type the name of the game you wish to play:");
@@ -46,8 +46,8 @@ namespace CleanCodeLab
 
                 int numberOfGuesses = _gameToPlay!.PlayGame();
                 _dataHandler.SavePlayersScore(playerName, numberOfGuesses, chosenGame);
-                List<PlayerData> scoreBoard = _dataHandler.GetAllUserAverageScores(chosenGame);
-                _ui.OutputScoreBoard(scoreBoard);
+                List<PlayerData> scoreBoard = _dataHandler.GetLeaderBoard(chosenGame);
+                _ui.OutputLeaderBoard(scoreBoard);
 
                 _ui.Output($"Correct, it took {numberOfGuesses} guesses.");
                 _ui.Output("Do you want to play a game again? yes/no");

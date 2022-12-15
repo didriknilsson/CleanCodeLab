@@ -11,7 +11,7 @@ namespace CleanCodeLab
         public string Name { get; set; } = "Moo";
         private readonly IUI _ui;
         private int _numberOfGuesses;
-        private string? _targetToGuess;
+        private string _targetToGuess = "";
         public Moo(IUI ui)
         {
             _ui = ui;
@@ -21,22 +21,26 @@ namespace CleanCodeLab
         {
             _numberOfGuesses++;
             if (playerGuess.Length < 4)
-            {
                 playerGuess += "    ";
+            int cows = 0, bulls = 0;
+            for (int targetPos = 0; targetPos < 4; targetPos++)
+            {
+                for (int guessPos = 0; guessPos < 4; guessPos++)
+                {
+                    if (_targetToGuess[targetPos] == playerGuess[guessPos])
+                    {
+                        if (targetPos == guessPos)
+                        {
+                            bulls++;
+                        }
+                        else
+                        {
+                            cows++;
+                        }
+                    }
+                }
             }
-            char[] playerGuessCharArray = playerGuess.ToCharArray();
-            char[] targetGuessCharArray = _targetToGuess!.ToCharArray();
-            var bulls = playerGuessCharArray
-                            .Zip(targetGuessCharArray, (guess, target) => guess == target)
-                            .Count(z => z);
-
-            var cows = playerGuessCharArray
-                            .Intersect(targetGuessCharArray)
-                            .Sum(c =>
-                                System.Math.Min(
-                                    targetGuessCharArray.Count(x => x == c),
-                                    playerGuessCharArray.Count(x => x == c))) - bulls;
-            return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
+            return new string ('B', bulls) + "," + new string('C', cows);
         }
 
         public void CreateTargetToGuess()

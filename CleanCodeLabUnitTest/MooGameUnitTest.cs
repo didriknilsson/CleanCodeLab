@@ -1,4 +1,5 @@
 using CleanCodeLab;
+using CleanCodeLab.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.RegularExpressions;
 
@@ -7,6 +8,7 @@ namespace CleanCodeLabUnitTest
     [TestClass]
     public class MooGameUnitTest
     {
+        FileDataHandler _dataHandler = new FileDataHandler();
         //[TestMethod()]
         //public void MooGameTargetToGuessIsFourDigits()
         //{
@@ -19,7 +21,7 @@ namespace CleanCodeLabUnitTest
         public void TestScoreParserPlayerName()
         {
             string testscore = "amanda#&#3";
-            PlayerData actualPlayerData = FileDataHandler.ParsePlayerAndScore(testscore);
+            PlayerData actualPlayerData = _dataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);            
         }
@@ -27,7 +29,7 @@ namespace CleanCodeLabUnitTest
         public void TestScoreParserPlayerScore()
         {
             string testscore = "amanda#&#3";
-            PlayerData actualPlayerData = FileDataHandler.ParsePlayerAndScore(testscore);
+            PlayerData actualPlayerData = _dataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
         }
@@ -37,7 +39,7 @@ namespace CleanCodeLabUnitTest
         public void TestScoreParserPlayer(string testscore, string expectedPlayerName, int expectedTotalGuesses)
         {
   
-            PlayerData actualPlayerData = FileDataHandler.ParsePlayerAndScore(testscore);
+            PlayerData actualPlayerData = _dataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData(expectedPlayerName, expectedTotalGuesses);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
