@@ -33,7 +33,7 @@ namespace CleanCodeLab
             return leaderBoard; 
         }
 
-        private List<PlayerData> ConvertToLeaderBoard(List<string> scoreList)
+        public List<PlayerData> ConvertToLeaderBoard(List<string> scoreList)
         {
             List<PlayerData> leaderBoard = new List<PlayerData>();
             foreach (var score in scoreList)
@@ -54,7 +54,7 @@ namespace CleanCodeLab
             return leaderBoard;
         }
 
-        private List<PlayerData> CalculateLeaderBoard(List<PlayerData> leaderBoard)
+        public List<PlayerData> CalculateLeaderBoard(List<PlayerData> leaderBoard)
         {
             leaderBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
             return leaderBoard;
@@ -68,7 +68,7 @@ namespace CleanCodeLab
             return new PlayerData(name, guesses);
         }
 
-        private List<string> GetScoreList(StreamReader scoresStreamReader)
+        public List<string> GetScoreList(StreamReader scoresStreamReader)
         {
             List<string> scoreData = new List<string>();
             

@@ -11,7 +11,7 @@ namespace CleanCodeLab
         public string Name { get; set; } = "Moo";
         private readonly IUI _ui;
         private int _numberOfGuesses;
-        private string _targetToGuess = "";
+        public string _targetToGuess = ""; // Får denna vara public eftersom att vi bara använder Moo som ett IGame. public pga testning
         public Moo(IUI ui)
         {
             _ui = ui;

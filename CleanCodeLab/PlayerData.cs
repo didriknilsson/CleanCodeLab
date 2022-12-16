@@ -33,13 +33,5 @@ namespace CleanCodeLab
         {
             return Name.Equals(((PlayerData)p).Name);
         }
-
-
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
     }
-
-
 }

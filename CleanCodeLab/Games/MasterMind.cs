@@ -26,21 +26,43 @@ namespace CleanCodeLab.Games
             {
                 playerGuess += "    ";
             }
-            char[] playerGuessCharArray = playerGuess.ToCharArray();
-            char[] targetGuessCharArray = _targetToGuess!.ToCharArray();
-            var black = playerGuessCharArray
-                            .Zip(targetGuessCharArray, (guess, target) => guess == target)
-                            .Count(z => z);
+            bool isBlack;
+            StringBuilder result = new StringBuilder();
 
-            var white = playerGuessCharArray
-                            .Intersect(targetGuessCharArray)
-                            .Sum(c =>
-                                System.Math.Min(
-                                    targetGuessCharArray.Count(x => x == c),
-                                    playerGuessCharArray.Count(x => x == c))) - black;
+            for (int targetPos = 0; targetPos < 4; targetPos++)
+            {
+                isBlack = false;
+                for (int guessPos = 0; guessPos < 4; guessPos++)
+                {
+                    if (_targetToGuess[targetPos] == playerGuess[guessPos])
+                    {                        
+                        if (targetPos == guessPos && !isBlack)
+                        {
+                            result.Append('B');
+                            isBlack = true;
+                        }
+                        else if(!isBlack)
+                        {
+                            result.Append('W');
+                        }
+                    }
+                }
+            }
+            //var black = playerGuessCharArray
+            //                .Zip(targetGuessCharArray, (guess, target) => guess == target)
+            //                .Count(z => z);
 
-            return "BBBB".Substring(0, black) + "," + "CCCC".Substring(0, white);
+            //var white = playerGuessCharArray
+            //                .Intersect(targetGuessCharArray)
+            //                .Sum(c =>
+            //                    System.Math.Min(
+            //                        targetGuessCharArray.Count(x => x == c),
+            //                        playerGuessCharArray.Count(x => x == c))) - black;
+
+            return result.ToString();
         }
+
+        
 
         public void CreateTargetToGuess()
         {
@@ -82,4 +104,12 @@ namespace CleanCodeLab.Games
                 return true;
         }
     }
+    public enum GuessStage
+    {
+        Black,
+        White,
+        Wrong
+    }
 }
+
+   

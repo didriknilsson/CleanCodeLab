@@ -13,8 +13,7 @@ namespace CleanCodeLab
         private IUI _ui;
         private IGameDataHandler _dataHandler;
         private GameFactory _gameFactory;
-        private IGame? _gameToPlay;
-
+        private IGame? _gameToPlay;     
 
         public GamesController(IUI ui, GameFactory gameFactory, IGameDataHandler dataHandler)
         {
