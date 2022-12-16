@@ -11,12 +11,11 @@ namespace CleanCodeLab
     public class GamesController
     {
         private IUI _ui;
-        private IDataHandler _dataHandler;
+        private IGameDataHandler _dataHandler;
         private GameFactory _gameFactory;
-        private IGame _game;
+        private IGame? _gameToPlay;     
 
-
-        public GamesController(IUI ui, GameFactory gameFactory, IDataHandler dataHandler)
+        public GamesController(IUI ui, GameFactory gameFactory, IGameDataHandler dataHandler)
         {
             _ui = ui;
             _dataHandler = dataHandler;
@@ -27,33 +26,38 @@ namespace CleanCodeLab
         {
             string playerName;
 
-            _ui.Output("Enter your user name:\n");
-            playerName = _ui.Input();
+            _ui.Output("Enter your user name:");
+            playerName = _ui.Input().Trim();
             bool keepPlaying = true;
-            bool gameExists = false;
-            string chosenGame = "";
-            while(keepPlaying)
+            do
             {
-                _ui.Output("Choose a game to play:\n");
-                _ui.OutputList(_gameFactory.GetGames());
-                _ui.Output("Please type the name of the game you wish to play:\n");
-                while(!gameExists)
+                string chosenGame;
+                _ui.Output("Avalible game(s):");
+                _ui.OutputGameNames(_gameFactory.GetGameNames());
+                _ui.Output("Please type the name of the game you wish to play:");
+                do
                 {
-                    chosenGame = _ui.Input().ToLower();
-                    gameExists = _gameFactory.CheckIfGameExists(chosenGame);
-                }
+                    chosenGame = _ui.Input().ToLower().Trim();
+                    _gameToPlay = _gameFactory.CheckIfGameExists(chosenGame);
+                    if (_gameToPlay == null)
+                        _ui.Output($"There's no game called {chosenGame}, please try again.");
+                } while (_gameToPlay == null);
 
-                _game = _gameFactory.CreateGame(chosenGame, _ui);
-                int numberOfGuesses = _game.PlayGame();
+                int numberOfGuesses = _gameToPlay!.PlayGame();
                 _dataHandler.SavePlayersScore(playerName, numberOfGuesses, chosenGame);
-                List<PlayerData> scoreBoard = _dataHandler.GetAllScores(chosenGame);
-                _ui.OutputScoreBoard(scoreBoard);
-               
-                _ui.Output($"Correct, it took {numberOfGuesses} guesses \n Do you want to play a game again? yes/no");
+                List<PlayerData> scoreBoard = _dataHandler.GetLeaderBoard(chosenGame);
+                _ui.OutputLeaderBoard(scoreBoard);
+
+                _ui.Output($"Correct, it took {numberOfGuesses} guesses.");
+                _ui.Output("Do you want to play a game again? yes/no");
                 string playerChoice = _ui.Input();
-                if(playerChoice.ToLower() == "no")
+                if (playerChoice.ToLower().Trim() == "no")
+                {
                     keepPlaying = false;
-            }
+                    _ui.Exit();
+                }
+                _gameToPlay = null;
+            }while (keepPlaying);
         }
     }
 }

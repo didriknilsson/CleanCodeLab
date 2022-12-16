@@ -8,52 +8,84 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab
 {
-    public class FileDataHandler : IDataHandler
+    public class FileDataHandler : IGameDataHandler
     {
-        private string _filePath;
         public FileDataHandler()
         {
             
         }
-        public List<PlayerData> GetAllScores(string chosenGame)
+        public List<PlayerData> GetLeaderBoard(string chosenGame)
         {
-            _filePath = ScoreFileFactory.GetFilePath(chosenGame);
-            StreamReader scores = new StreamReader(_filePath);
+            StreamReader scoresStreamReader;
+            string filePath = $"{chosenGame}.txt";
+            try
+            {
+                scoresStreamReader = new StreamReader(filePath);
+            }
+            catch
+            {
+                return new List<PlayerData>();
+            }
 
-            return ConvertToPlayerData(scores);
+            List<string> scores = GetScoreList(scoresStreamReader);
+            List<PlayerData> leaderBoard = ConvertToLeaderBoard(scores);
 
+            return leaderBoard; 
+        }
+
+        public List<PlayerData> ConvertToLeaderBoard(List<string> scoreList)
+        {
+            List<PlayerData> leaderBoard = new List<PlayerData>();
+            foreach (var score in scoreList)
+            {
+                PlayerData playerData = ParsePlayerAndScore(score);
+                int pos = leaderBoard.IndexOf(playerData);
+                if (pos < 0)
+                {
+                    leaderBoard.Add(playerData);
+                }
+                else
+                {
+                    leaderBoard[pos].Update(playerData.TotalGuesses);
+                }
+            }
+
+            leaderBoard = CalculateLeaderBoard(leaderBoard);
+            return leaderBoard;
+        }
+
+        public List<PlayerData> CalculateLeaderBoard(List<PlayerData> leaderBoard)
+        {
+            leaderBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            return leaderBoard;
+        }
+
+        public PlayerData ParsePlayerAndScore(string score)
+        {
+            string[] nameAndScore = score.Split(new string[] { "#&#" }, StringSplitOptions.None);
+            string name = nameAndScore[0];
+            int guesses = Convert.ToInt32(nameAndScore[1]);
+            return new PlayerData(name, guesses);
+        }
+
+        public List<string> GetScoreList(StreamReader scoresStreamReader)
+        {
+            List<string> scoreData = new List<string>();
+            
+            while(scoresStreamReader.ReadLine() is { } line)
+            {
+                scoreData.Add(line);
+            }
+            scoresStreamReader.Close();
+            return scoreData;
         }
 
         public void SavePlayersScore(string name, int numberOfGuesses, string chosenGame)
         {
-            _filePath = ScoreFileFactory.GetFilePath(chosenGame);
-            StreamWriter output = new StreamWriter(_filePath, append: true);
+            string filePath = $"{chosenGame}.txt";
+            StreamWriter output = new StreamWriter(filePath, append: true);
             output.WriteLine(name + "#&#" + numberOfGuesses);
             output.Close();
-        }
-        public List<PlayerData> ConvertToPlayerData(StreamReader scores)
-        {
-            List<PlayerData> results = new List<PlayerData>();
-            string line;
-            while ((line = scores.ReadLine()) != null)
-            {
-                string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-                string name = nameAndScore[0];
-                int guesses = Convert.ToInt32(nameAndScore[1]);
-                PlayerData pd = new PlayerData(name, guesses);
-                int pos = results.IndexOf(pd);
-                if (pos < 0)
-                {
-                    results.Add(pd);
-                }
-                else
-                {
-                    results[pos].Update(guesses);
-                }
-            }
-            results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-            scores.Close();
-            return results;
         }
     }
 }

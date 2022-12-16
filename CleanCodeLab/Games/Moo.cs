@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace CleanCodeLab
 {
-    public class MooGame : IGame
+    public class Moo : IGame
     {
+        public string Name { get; set; } = "Moo";
         private readonly IUI _ui;
         private int _numberOfGuesses;
-        private string _targetToGuess;
-        public MooGame(IUI ui)
+        public string _targetToGuess = ""; // Får denna vara public eftersom att vi bara använder Moo som ett IGame. public pga testning
+        public Moo(IUI ui)
         {
             _ui = ui;
         }
@@ -19,25 +20,27 @@ namespace CleanCodeLab
         public string CheckGuess(string playerGuess)
         {
             _numberOfGuesses++;
-            int cows = 0, bulls = 0;
             if (playerGuess.Length < 4)
-            {
                 playerGuess += "    ";
-            }
-            char[] playerGuessCharArray = playerGuess.ToCharArray();
-            char[] targetGuessCharArray = _targetToGuess.ToCharArray();
-            foreach (var targetGuessChar in targetGuessCharArray.Where(targetGuessChar => playerGuessCharArray.Contains(targetGuessChar)))
+            int cows = 0, bulls = 0;
+            for (int targetPos = 0; targetPos < 4; targetPos++)
             {
-                if (Array.IndexOf(playerGuessCharArray, targetGuessChar) == Array.IndexOf(targetGuessCharArray, targetGuessChar))
+                for (int guessPos = 0; guessPos < 4; guessPos++)
                 {
-                    bulls++;
-                }
-                else
-                {
-                    cows++;
+                    if (_targetToGuess[targetPos] == playerGuess[guessPos])
+                    {
+                        if (targetPos == guessPos)
+                        {
+                            bulls++;
+                        }
+                        else
+                        {
+                            cows++;
+                        }
+                    }
                 }
             }
-            return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
+            return new string ('B', bulls) + "," + new string('C', cows);
         }
 
         public void CreateTargetToGuess()
@@ -58,17 +61,18 @@ namespace CleanCodeLab
 
         public int PlayGame()
         {
+            _numberOfGuesses = 0;
             bool continueGame = true;
-            _ui.Output("New game:\n");
+            _ui.Output("New game:");
             CreateTargetToGuess();
-            Console.WriteLine("For practice, number is: " + _targetToGuess + "\n");
+            Console.WriteLine("For practice, number is: " + _targetToGuess); // DENNA SKA BORT INNAINLÄMNING
 
             while (continueGame)
             {
-                string playerGuess = _ui.Input();
-                string result = CheckGuess(playerGuess);
-                _ui.Output(result + "\n");
-                continueGame = ShouldGameContinue(result);
+                string playerGuess = _ui.Input().Trim();
+                string bullsAndCows = CheckGuess(playerGuess);
+                _ui.Output(bullsAndCows);
+                continueGame = ShouldGameContinue(bullsAndCows);
             }
             return _numberOfGuesses;
         }

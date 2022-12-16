@@ -13,7 +13,7 @@ namespace CleanCodeLab
         public int NumberOfGamesPlayed { get; set; }
         public PlayerData(string name, int guesses)
         {
-            this.Name = name;
+            Name = name;
             NumberOfGamesPlayed = 1;
             TotalGuesses = guesses;
         }
@@ -33,13 +33,5 @@ namespace CleanCodeLab
         {
             return Name.Equals(((PlayerData)p).Name);
         }
-
-
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
     }
-
-
 }

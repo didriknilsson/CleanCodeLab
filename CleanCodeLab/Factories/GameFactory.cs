@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CleanCodeLab.Games;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,34 +9,26 @@ namespace CleanCodeLab.Factories
 {
     public class GameFactory
     {
-        public List<string> GetGames()
+        public List<IGame> _gameList { get; set; } = new List<IGame>();
+        public GameFactory(IUI ui)
         {
-            List<string> games = new List<string>();
-            games.Add("MooGame");
-            games.Add("MasterMind");
-            return games;
+            _gameList.Add(new Moo(ui));
+            _gameList.Add(new MasterMind(ui)); 
         }
-        public bool CheckIfGameExists(string chosenGame)
+        public List<string> GetGameNames()
         {
-            List<string> games = GetGames();
-            string game = games.Where(x => x.ToLower() == chosenGame).FirstOrDefault();
-            if (game == null)
-                return false;
-            else
-                return true;
-        }
-        public IGame CreateGame(string type, IUI ui)
-        {
-            switch(type)
-            {
-                case "moogame":
-                    return new MooGame(ui);          
-                case "mastermind":
-                    throw new NotImplementedException("Game does not exist");
-                default:
-                    throw new Exception();
-            }
+            List<string> names = new List<string>();
 
+            foreach(IGame game in _gameList)
+            {
+                names.Add(game.Name);
+            }
+            return names;
+        }
+        public IGame? CheckIfGameExists(string chosenGame)
+        {
+            IGame? game = _gameList.Where(x => x.Name.ToLower() == chosenGame).FirstOrDefault();
+            return game;
         }
     }
 }
