@@ -65,6 +65,8 @@ namespace CleanCodeLab
             bool continueGame = true;
             _ui.Output("New game:");
             CreateTargetToGuess();
+            _ui.Output("Welcome to Moo\nA 4 digit number between the numbers 1 to 9 has randomly been generated. Note that one digit can only appear one time.\nYour task will be to guess the correct number\nGood luck!");
+
             Console.WriteLine("For practice, number is: " + _targetToGuess); // DENNA SKA BORT INNAINLÄMNING
 
             while (continueGame)
