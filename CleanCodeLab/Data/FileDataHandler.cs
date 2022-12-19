@@ -61,7 +61,7 @@ namespace CleanCodeLab
             {
                 player.CalculateAverageScore();
             }
-            leaderBoard.Sort((p1, p2) => p1.AverageScore.CompareTo(p2.AverageScore));
+            leaderBoard.Sort((player1, player2) => player1.AverageScore.CompareTo(player2.AverageScore));
             return leaderBoard;
         }
 
