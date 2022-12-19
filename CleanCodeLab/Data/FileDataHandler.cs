@@ -10,6 +10,7 @@ namespace CleanCodeLab
 {
     public class FileDataHandler : IGameDataHandler
     {
+        public readonly string seperator = "#&#";
         public FileDataHandler()
         {
             
@@ -66,7 +67,7 @@ namespace CleanCodeLab
 
         public PlayerData ParsePlayerAndScore(string score)
         {
-            string[] nameAndScore = score.Split(new string[] { "#&#" }, StringSplitOptions.None);
+            string[] nameAndScore = score.Split(new string[] { seperator }, StringSplitOptions.None);
             string name = nameAndScore[0];
             int guesses = Convert.ToInt32(nameAndScore[1]);
             return new PlayerData(name, guesses);
@@ -88,7 +89,7 @@ namespace CleanCodeLab
         {
             string filePath = $"{chosenGame}.txt";
             StreamWriter output = new StreamWriter(filePath, append: true);
-            output.WriteLine(name + "#&#" + numberOfGuesses);
+            output.WriteLine(name + seperator + numberOfGuesses);
             output.Close();
         }
     }

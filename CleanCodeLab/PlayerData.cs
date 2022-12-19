@@ -8,10 +8,11 @@ namespace CleanCodeLab
 {
     public class PlayerData
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
         public int TotalGuesses { get; set; }
         public int NumberOfGamesPlayed { get; set; }
-        public double AverageScore { get; set; }
+        public double AverageScore {get; private set; }
+
         public PlayerData(string name, int guesses)
         {
             Name = name;
@@ -27,7 +28,7 @@ namespace CleanCodeLab
 
         public void CalculateAverageScore()
         {
-            AverageScore = (double)TotalGuesses / NumberOfGamesPlayed;
+            AverageScore =  (double)TotalGuesses / NumberOfGamesPlayed;
         }
 
         public override bool Equals(Object? player)

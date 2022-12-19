@@ -18,22 +18,13 @@ namespace CleanCodeLabUnitTest
             Assert.AreEqual(0, player.TotalGuesses);
         }
         [TestMethod()]
-        public void TestUpdate()
+        public void TestAddGameResult()
         {
             player.AddGameResult(2);
             Assert.AreEqual(2, player.TotalGuesses);
         }
         [TestMethod()]
-        public void TestAverageReturnsDouble()
-        {
-            player.TotalGuesses = 4;
-            player.NumberOfGamesPlayed = 2;
-            player.CalculateAverageScore();
-            double result = player.AverageScore;
-            Assert.IsInstanceOfType(result, typeof(double));
-        }
-        [TestMethod()]
-        public void TestAverage()
+        public void TestCalculateAverageScore()
         {
             player.TotalGuesses = 4;
             player.NumberOfGamesPlayed = 2;

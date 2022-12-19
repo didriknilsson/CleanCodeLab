@@ -12,26 +12,25 @@ namespace CleanCodeLabUnitTest
     [TestClass]
     public class GameFactoryUnitTest
     {
-        IUI ui;
-        GameFactory gameFactory;
+        IUI _ui;
+        GameFactory _gameFactory;
 
         [TestInitialize]
         public void MooGameTestInitialize()
         {
-            ui = new ConsoleIO();
-            gameFactory = new GameFactory(ui);
-
+            _ui = new ConsoleIO(); // Denna skaps ny inför varje test, för att vara helt säker på att jag får en ny instans inför varje test
+            _gameFactory = new GameFactory(_ui);
         }
         [TestMethod]
         public void CreateGamesWithGameFactory()
         {
-            GameFactory gameFactory = new GameFactory(ui);
+            GameFactory gameFactory = new GameFactory(_ui);
             Assert.IsNotNull(gameFactory.GameList);
         }
         [TestMethod]
         public void TestGetGamesNames()
         { 
-            List<string> result = gameFactory.GetGameNames();
+            List<string> result = _gameFactory.GetGameNames();
             List<string> expected = new List<string>() { "Moo","MasterMind" };
         
             CollectionAssert.AreEqual(result, expected);
@@ -39,8 +38,8 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]        
         public void TestGetGame()
         {
-            IGame? mooGame = gameFactory.CheckIfGameExists("moo");
-            IGame? mastermindGame = gameFactory.CheckIfGameExists("mastermind");
+            IGame? mooGame = _gameFactory.CheckIfGameExists("moo");
+            IGame? mastermindGame = _gameFactory.CheckIfGameExists("mastermind");
             Assert.IsInstanceOfType(mooGame, typeof(IGame));
             Assert.IsInstanceOfType(mastermindGame, typeof(IGame));
 

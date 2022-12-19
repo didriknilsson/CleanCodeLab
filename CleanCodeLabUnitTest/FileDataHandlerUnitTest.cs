@@ -13,42 +13,80 @@ namespace CleanCodeLabUnitTest
     [TestClass()]
     public class FileDataHandlerUnitTest
     {
-        FileDataHandler _dataHandler = new FileDataHandler();
+        FileDataHandler _fileDataHandler = new FileDataHandler();
 
         [TestMethod()]
-        public void TestSavePlayersScoreAndGetLeaderBoard()
+        public void TestSavePlayersScore()
         {
-            _dataHandler.SavePlayersScore("Amanda", 3, "test");
-            _dataHandler.SavePlayersScore("Ulf", 5, "test");
-            _dataHandler.SavePlayersScore("Oscar", 3, "test");
-            _dataHandler.SavePlayersScore("Amanda", 5, "test");
-            _dataHandler.SavePlayersScore("Amanda", 2, "test");
+            File.WriteAllText("test.txt", "");
+            _fileDataHandler.SavePlayersScore("Amanda", 3, "test");
+            _fileDataHandler.SavePlayersScore("Ulf", 5, "test");
+            _fileDataHandler.SavePlayersScore("Oscar", 3, "test");
+            _fileDataHandler.SavePlayersScore("Amanda", 5, "test");
+            _fileDataHandler.SavePlayersScore("Amanda", 2, "test");
 
-            List<PlayerData> result = _dataHandler.GetLeaderBoard("test");
-            Assert.AreEqual(3, result.Count);
-            Assert.AreEqual(result[0].Name, "Oscar");
+            StreamReader scoresStreamReader = new StreamReader("test.txt");
+            List<string> actualScoreData = new List<string>();
+
+            while (scoresStreamReader.ReadLine() is { } line)
+            {
+                actualScoreData.Add(line);
+            }
+            scoresStreamReader.Close();
+
+            List<string> expectedResult = new List<string>() {$"Amanda{_fileDataHandler.seperator}3",
+                $"Ulf{_fileDataHandler.seperator}5",$"Oscar{_fileDataHandler.seperator}3",
+                $"Amanda{_fileDataHandler.seperator}5", $"Amanda{_fileDataHandler.seperator}2"};
+
+            CollectionAssert.AreEqual(expectedResult, actualScoreData);
+
+        }
+        [TestMethod]
+        public void TestGetLeaderBoard()
+        {
+            File.WriteAllText("test.txt", "");
+
+            StreamWriter output = new StreamWriter("test.txt", append: true);
+            output.WriteLine("Amanda" + _fileDataHandler.seperator + 4);
+            output.WriteLine("Ulf" + _fileDataHandler.seperator + 5);
+            output.WriteLine("Oscar" + _fileDataHandler.seperator + 3);
+            output.WriteLine("Amanda" + _fileDataHandler.seperator + 6);
+            output.WriteLine("Amanda" + _fileDataHandler.seperator + 5);
+            output.Close();
+
+            List<PlayerData> actualResult = _fileDataHandler.GetLeaderBoard("test");
+            List<PlayerData> expectedResult = new List<PlayerData>();
+            expectedResult.Add(new PlayerData("Oscar", 3));
+            expectedResult.Add(new PlayerData("Ulf", 5));
+            PlayerData player1 = new PlayerData("Amanda", 4);
+            player1.AddGameResult(6);
+            player1.AddGameResult(5);
+            expectedResult.Add(player1);
+
+            CollectionAssert.AreEqual(actualResult, expectedResult);
+
         }
 
         [TestMethod()]
         public void TestGetScoreFromEmptyFile()
         {           
-            List<PlayerData> result = _dataHandler.GetLeaderBoard("testEmpty");
+            List<PlayerData> result = _fileDataHandler.GetLeaderBoard("testEmpty");
             Assert.AreEqual(0, result.Count);
         }
 
         [TestMethod()]
         public void TestScoreParserPlayerName()
         {
-            string testscore = "amanda#&#3";
-            PlayerData actualPlayerData = _dataHandler.ParsePlayerAndScore(testscore);
+            string testscore = $"amanda{_fileDataHandler}3";
+            PlayerData actualPlayerData = _fileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);
         }
         [TestMethod()]
         public void TestScoreParserPlayerScore()
         {
-            string testscore = "amanda#&#3";
-            PlayerData actualPlayerData = _dataHandler.ParsePlayerAndScore(testscore);
+            string testscore = $"amanda{_fileDataHandler.seperator}3";
+            PlayerData actualPlayerData = _fileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
         }
@@ -56,7 +94,7 @@ namespace CleanCodeLabUnitTest
         [DataRow("amanda#&#3", "amanda", 3)]
         public void TestScoreParserPlayer(string testscore, string expectedPlayerName, int expectedTotalGuesses)
         {
-            PlayerData actualPlayerData = _dataHandler.ParsePlayerAndScore(testscore);
+            PlayerData actualPlayerData = _fileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData(expectedPlayerName, expectedTotalGuesses);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
@@ -64,18 +102,18 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void TestGetScoreListFirstPosition()
         {
-            _dataHandler.SavePlayersScore("Amanda", 3, "mootest");
-            _dataHandler.SavePlayersScore("Ulf", 5, "mootest");
-            _dataHandler.SavePlayersScore("Oscar", 3, "mastermindtest");
-            _dataHandler.SavePlayersScore("Amanda", 5, "mootest");
-            _dataHandler.SavePlayersScore("Didrik", 5, "mastermindtest");
-            _dataHandler.SavePlayersScore("Didrik", 2, "mootest");
-            _dataHandler.SavePlayersScore("Didrik", 2, "mastermindtest");
+            _fileDataHandler.SavePlayersScore("Amanda", 3, "mootest");
+            _fileDataHandler.SavePlayersScore("Ulf", 5, "mootest");
+            _fileDataHandler.SavePlayersScore("Oscar", 3, "mastermindtest");
+            _fileDataHandler.SavePlayersScore("Amanda", 5, "mootest");
+            _fileDataHandler.SavePlayersScore("Didrik", 5, "mastermindtest");
+            _fileDataHandler.SavePlayersScore("Didrik", 2, "mootest");
+            _fileDataHandler.SavePlayersScore("Didrik", 2, "mastermindtest");
 
             StreamReader mooScoresStreamReader = new StreamReader("mootest.txt");
             StreamReader mastermindScoresStreamReader = new StreamReader("mastermindtest.txt");
-            List<string> mooScoreList = _dataHandler.GetScoreList(mooScoresStreamReader);
-            List<string> masterMindScoreList = _dataHandler.GetScoreList(mastermindScoresStreamReader);
+            List<string> mooScoreList = _fileDataHandler.GetScoreList(mooScoresStreamReader);
+            List<string> masterMindScoreList = _fileDataHandler.GetScoreList(mastermindScoresStreamReader);
 
             //Assert.AreEqual(4, mooScoreList.Count);
             //Assert.AreEqual(3, masterMindScoreList.Count);
@@ -87,7 +125,7 @@ namespace CleanCodeLabUnitTest
         public void TestConvertToLeaderBoard()
         {
             List<string> scoreList = new List<string>() {"didrik#&#2","amanda#&#2", "amanda#&#1" };
-            List<PlayerData> resultLeaderBoard = _dataHandler.ConvertToLeaderBoard(scoreList);
+            List<PlayerData> resultLeaderBoard = _fileDataHandler.ConvertToLeaderBoard(scoreList);
             List<PlayerData> expectedLeaderBoard = new List<PlayerData>();
             PlayerData player1 = new PlayerData("amanda", 2);
             player1.AddGameResult(1);
@@ -111,19 +149,16 @@ namespace CleanCodeLabUnitTest
             scoreBoard.Add(player1);
 
             List<PlayerData> expectedLeaderBoard = new List<PlayerData>();
-            //PlayerData excpectedPlayer1 = new PlayerData("amanda", 2);
-            //excpectedPlayer1.AddGameResult(1);
-            //PlayerData excpectedPlayer2 = new PlayerData("didrik", 2);
-            //PlayerData excpectedPlayer3 = new PlayerData("oscar", 5);
-            //excpectedPlayer3.AddGameResult(2);
-            //expectedLeaderBoard.Add(excpectedPlayer1);
-            //expectedLeaderBoard.Add(excpectedPlayer2);
-            //expectedLeaderBoard.Add(excpectedPlayer3);
-            expectedLeaderBoard.Add(player1);
-            expectedLeaderBoard.Add(player2);
-            expectedLeaderBoard.Add(player3);
+            PlayerData excpectedPlayer1 = new PlayerData("amanda", 2);
+            excpectedPlayer1.AddGameResult(1);
+            PlayerData excpectedPlayer2 = new PlayerData("didrik", 2);
+            PlayerData excpectedPlayer3 = new PlayerData("oscar", 5);
+            excpectedPlayer3.AddGameResult(2);
+            expectedLeaderBoard.Add(excpectedPlayer1);
+            expectedLeaderBoard.Add(excpectedPlayer2);
+            expectedLeaderBoard.Add(excpectedPlayer3);
 
-            List<PlayerData> actualLeaderBoard = _dataHandler.CalculateLeaderBoard(scoreBoard);
+            List<PlayerData> actualLeaderBoard = _fileDataHandler.CalculateLeaderBoard(scoreBoard);
 
             CollectionAssert.AreEqual(expectedLeaderBoard, actualLeaderBoard);
         }
