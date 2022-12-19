@@ -90,18 +90,23 @@ namespace CleanCodeLabUnitTest
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
         }
-        [DataTestMethod()]
-        [DataRow("amanda#&#3", "amanda", 3)]
-        public void TestScoreParserPlayer(string testscore, string expectedPlayerName, int expectedTotalGuesses)
+        [TestMethod()]
+        public void TestScoreParserPlayer()
         {
-            PlayerData actualPlayerData = _fileDataHandler.ParsePlayerAndScore(testscore);
+            string testScore = $"amanda{_fileDataHandler.seperator}3";
+            string expectedPlayerName = "amanda";
+            int expectedTotalGuesses = 3;
+            PlayerData actualPlayerData = _fileDataHandler.ParsePlayerAndScore(testScore);
             PlayerData expectedPlayerData = new PlayerData(expectedPlayerName, expectedTotalGuesses);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);
             Assert.AreEqual(expectedPlayerData.TotalGuesses, actualPlayerData.TotalGuesses);
         }
         [TestMethod()]
-        public void TestGetScoreListFirstPosition()
+        public void TestGetScoreList()
         {
+            File.WriteAllText("mootest.txt", "");
+            File.WriteAllText("mastermindtest.txt", "");
+
             _fileDataHandler.SavePlayersScore("Amanda", 3, "mootest");
             _fileDataHandler.SavePlayersScore("Ulf", 5, "mootest");
             _fileDataHandler.SavePlayersScore("Oscar", 3, "mastermindtest");
@@ -115,16 +120,16 @@ namespace CleanCodeLabUnitTest
             List<string> mooScoreList = _fileDataHandler.GetScoreList(mooScoresStreamReader);
             List<string> masterMindScoreList = _fileDataHandler.GetScoreList(mastermindScoresStreamReader);
 
-            //Assert.AreEqual(4, mooScoreList.Count);
-            //Assert.AreEqual(3, masterMindScoreList.Count);
-
-            Assert.AreEqual(mooScoreList[0], "Amanda#&#3");
-            Assert.AreEqual(masterMindScoreList[0], "Oscar#&#3");
+            Assert.AreEqual(4, mooScoreList.Count);
+            Assert.AreEqual(3, masterMindScoreList.Count);
         }
         [TestMethod]
         public void TestConvertToLeaderBoard()
         {
-            List<string> scoreList = new List<string>() {"didrik#&#2","amanda#&#2", "amanda#&#1" };
+            List<string> scoreList = new List<string>() {
+                $"didrik{_fileDataHandler.seperator}2",
+                $"amanda{_fileDataHandler.seperator}2",
+                $"amanda{_fileDataHandler.seperator}1" };
             List<PlayerData> resultLeaderBoard = _fileDataHandler.ConvertToLeaderBoard(scoreList);
             List<PlayerData> expectedLeaderBoard = new List<PlayerData>();
             PlayerData player1 = new PlayerData("amanda", 2);

@@ -40,14 +40,14 @@ namespace CleanCodeLab
             foreach (var score in scoreList)
             {
                 PlayerData playerData = ParsePlayerAndScore(score);
-                int position = leaderBoard.IndexOf(playerData);
-                if (position < 0)
+                int playerIndex = leaderBoard.IndexOf(playerData);
+                if (playerIndex < 0)
                 {
                     leaderBoard.Add(playerData);
                 }
                 else
                 {
-                    leaderBoard[position].AddGameResult(playerData.TotalGuesses);
+                    leaderBoard[playerIndex].AddGameResult(playerData.TotalGuesses);
                 }
             }
 

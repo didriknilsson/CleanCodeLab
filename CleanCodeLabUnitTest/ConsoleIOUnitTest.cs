@@ -15,7 +15,7 @@ namespace CleanCodeLabUnitTest
     [TestClass]
     public class ConsoleIOUnitTest
     {
-        IUI ui = new ConsoleIO();
+        IUI _ui = new ConsoleIO();
         
         [TestMethod]
         public void TestReadingFromConsole()
@@ -26,7 +26,7 @@ namespace CleanCodeLabUnitTest
             {
                 Console.SetIn(reader);
 
-                string actualOutput = ui.Input();
+                string actualOutput = _ui.Input();
 
                 Assert.AreEqual(testInput, actualOutput);
             }
@@ -40,7 +40,7 @@ namespace CleanCodeLabUnitTest
             {
                 Console.SetOut(writer);
                 
-                ui.Output("test output");
+                _ui.Output("test output");
 
                 string actualOutput = writer.ToString();
 
@@ -70,7 +70,7 @@ namespace CleanCodeLabUnitTest
                 Console.SetIn(stringReader);
                 Console.SetOut(stringWriter);
 
-                ui.OutputLeaderBoard(leaderBoard);
+                _ui.OutputLeaderBoard(leaderBoard);
 
                 Assert.AreEqual(expectedOutput, stringWriter.ToString());
             }
@@ -78,7 +78,6 @@ namespace CleanCodeLabUnitTest
         [TestMethod]
         public void TestOutputGameNames()
         {
-            // Arrange
             var names = new List<string> { "Moo", "MasterMind"};
             var expectedOutput = "Moo\r\nMasterMind\r\n";
 
@@ -88,10 +87,8 @@ namespace CleanCodeLabUnitTest
                 Console.SetIn(stringReader);
                 Console.SetOut(stringWriter);
 
-                // Act
-                ui.OutputGameNames(names);
+                _ui.OutputGameNames(names);
 
-                // Assert
                 Assert.AreEqual(expectedOutput, stringWriter.ToString());
             }
         }

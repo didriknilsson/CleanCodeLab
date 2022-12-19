@@ -8,7 +8,7 @@ namespace CleanCodeLabUnitTest
     [TestClass]
     public class MooGameUnitTest
     {
-        Moo _moo;
+        Moo? _moo;
         string _playerGuess = "";
         [TestInitialize]
         public void MooGameTestInitialize()
@@ -22,19 +22,19 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void MooGameTargetToGuessIsFourDigits()
         {
-            _moo.CreateTargetToGuess();
+            _moo!.CreateTargetToGuess();
             StringAssert.Matches(_moo._targetToGuess, new Regex(@"^\d{4}$")); 
         }
         [TestMethod()]
         public void MooGameCheckedGuessReturnsBOrC()
         {
-            _moo._targetToGuess = "3456";
+            _moo!._targetToGuess = "3456";
             StringAssert.Matches(_moo.CheckGuess(_playerGuess), new Regex(@"^[BC,]+$"));
         }
         [TestMethod()]
         public void TestMooGameShouldGameContiune()
         {
-            _moo._targetToGuess = "1234";
+            _moo!._targetToGuess = "1234";
             Assert.AreEqual(_moo.ShouldGameContinue(_playerGuess), false);
         }
     }
