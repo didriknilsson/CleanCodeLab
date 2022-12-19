@@ -13,7 +13,6 @@ namespace CleanCodeLabUnitTest
         [TestInitialize]
         public void MooGameTestInitialize()
         {
-            FileDataHandler _dataHandler = new FileDataHandler();
             IUI ui = new ConsoleIO();
             _moo = new Moo(ui);
             _playerGuess = "1234";

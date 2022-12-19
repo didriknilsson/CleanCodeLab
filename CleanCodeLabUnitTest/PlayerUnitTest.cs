@@ -53,6 +53,14 @@ namespace CleanCodeLabUnitTest
 
             Assert.IsFalse(result);
         }
+        [TestMethod]
+        public void TestGetHashCode()
+        {
+            int actualHashCode = _player!.GetHashCode();
+            string name = "amanda";
+
+            Assert.IsTrue(actualHashCode == name.GetHashCode());
+        }
 
 
     }
