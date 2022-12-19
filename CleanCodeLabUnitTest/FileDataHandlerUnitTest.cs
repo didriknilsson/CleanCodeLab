@@ -90,40 +90,42 @@ namespace CleanCodeLabUnitTest
             List<PlayerData> resultLeaderBoard = _dataHandler.ConvertToLeaderBoard(scoreList);
             List<PlayerData> expectedLeaderBoard = new List<PlayerData>();
             PlayerData player1 = new PlayerData("amanda", 2);
-            player1.UpdatePlayerData(1);
+            player1.AddGameResult(1);
             PlayerData player2 = new PlayerData("didrik", 2);
             expectedLeaderBoard.Add(player1);
             expectedLeaderBoard.Add(player2);
 
-            CollectionAssert.AreEqual(resultLeaderBoard, expectedLeaderBoard);
+            CollectionAssert.AreEqual(expectedLeaderBoard, resultLeaderBoard);
         }
         [TestMethod]
         public void TestCalculateLeaderBoard()
         {
             List<PlayerData> scoreBoard = new List<PlayerData>();
             PlayerData player1 = new PlayerData("amanda", 2);
-            player1.UpdatePlayerData(1);
+            player1.AddGameResult(1);
             PlayerData player2 = new PlayerData("didrik", 2);
             PlayerData player3 = new PlayerData("oscar", 5);
-            player3.UpdatePlayerData(2);
+            player3.AddGameResult(2);
             scoreBoard.Add(player3);
             scoreBoard.Add(player2);
             scoreBoard.Add(player1);
 
-            List<PlayerData> expectedScoreBoard = new List<PlayerData>();
-            PlayerData excpectedPlayer1 = new PlayerData("amanda", 2);
-            excpectedPlayer1.UpdatePlayerData(1);
-            PlayerData excpectedPlayer2 = new PlayerData("didrik", 2);
-            PlayerData excpectedPlayer3 = new PlayerData("oscar", 5);
-            excpectedPlayer3.UpdatePlayerData(2);         
-            expectedScoreBoard.Add(excpectedPlayer1);
-            expectedScoreBoard.Add(excpectedPlayer2);
-            expectedScoreBoard.Add(excpectedPlayer3);
+            List<PlayerData> expectedLeaderBoard = new List<PlayerData>();
+            //PlayerData excpectedPlayer1 = new PlayerData("amanda", 2);
+            //excpectedPlayer1.AddGameResult(1);
+            //PlayerData excpectedPlayer2 = new PlayerData("didrik", 2);
+            //PlayerData excpectedPlayer3 = new PlayerData("oscar", 5);
+            //excpectedPlayer3.AddGameResult(2);
+            //expectedLeaderBoard.Add(excpectedPlayer1);
+            //expectedLeaderBoard.Add(excpectedPlayer2);
+            //expectedLeaderBoard.Add(excpectedPlayer3);
+            expectedLeaderBoard.Add(player1);
+            expectedLeaderBoard.Add(player2);
+            expectedLeaderBoard.Add(player3);
 
-            List<PlayerData> resultLeaderBoard = _dataHandler.CalculateLeaderBoard(scoreBoard);
+            List<PlayerData> actualLeaderBoard = _dataHandler.CalculateLeaderBoard(scoreBoard);
 
-            CollectionAssert.AreEqual(resultLeaderBoard, expectedScoreBoard);
-
+            CollectionAssert.AreEqual(expectedLeaderBoard, actualLeaderBoard);
         }
     }
 }

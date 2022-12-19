@@ -19,7 +19,7 @@ namespace CleanCodeLab
             TotalGuesses = guesses;
         }
 
-        public void UpdatePlayerData(int guesses)
+        public void AddGameResult(int guesses)
         {
             TotalGuesses += guesses;
             NumberOfGamesPlayed++;

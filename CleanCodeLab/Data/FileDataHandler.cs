@@ -46,7 +46,7 @@ namespace CleanCodeLab
                 }
                 else
                 {
-                    leaderBoard[position].UpdatePlayerData(playerData.TotalGuesses);
+                    leaderBoard[position].AddGameResult(playerData.TotalGuesses);
                 }
             }
 
