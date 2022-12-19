@@ -11,6 +11,7 @@ namespace CleanCodeLab
         public string Name { get; set; }
         public int TotalGuesses { get; set; }
         public int NumberOfGamesPlayed { get; set; }
+        public double AverageScore { get; set; }
         public PlayerData(string name, int guesses)
         {
             Name = name;
@@ -18,20 +19,24 @@ namespace CleanCodeLab
             TotalGuesses = guesses;
         }
 
-        public void Update(int guesses)
+        public void UpdatePlayerData(int guesses)
         {
             TotalGuesses += guesses;
             NumberOfGamesPlayed++;
         }
 
-        public double Average()
+        public void CalculateAverageScore()
         {
-            return (double)TotalGuesses / NumberOfGamesPlayed;
+            AverageScore = (double)TotalGuesses / NumberOfGamesPlayed;
         }
 
-        public override bool Equals(Object p)
+        public override bool Equals(Object? player)
         {
-            return Name.Equals(((PlayerData)p).Name);
+            return Name.Equals(((PlayerData)player!).Name);
+        }
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

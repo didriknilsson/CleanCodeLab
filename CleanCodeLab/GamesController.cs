@@ -10,9 +10,9 @@ namespace CleanCodeLab
 {
     public class GamesController
     {
-        private IUI _ui;
-        private IGameDataHandler _dataHandler;
-        private GameFactory _gameFactory;
+        private readonly IUI _ui;
+        private readonly IGameDataHandler _dataHandler;
+        private readonly GameFactory _gameFactory;
         private IGame? _gameToPlay;     
 
         public GamesController(IUI ui, GameFactory gameFactory, IGameDataHandler dataHandler)
@@ -45,8 +45,8 @@ namespace CleanCodeLab
 
                 int numberOfGuesses = _gameToPlay!.PlayGame();
                 _dataHandler.SavePlayersScore(playerName, numberOfGuesses, chosenGame);
-                List<PlayerData> scoreBoard = _dataHandler.GetLeaderBoard(chosenGame);
-                _ui.OutputLeaderBoard(scoreBoard);
+                List<PlayerData> leaderBoard = _dataHandler.GetLeaderBoard(chosenGame);
+                _ui.OutputLeaderBoard(leaderBoard);
 
                 _ui.Output($"Correct, it took {numberOfGuesses} guesses.");
                 _ui.Output("Do you want to play a game again? yes/no");

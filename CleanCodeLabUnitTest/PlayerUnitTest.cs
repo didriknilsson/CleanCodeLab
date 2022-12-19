@@ -20,7 +20,7 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void TestUpdate()
         {
-            player.Update(2);
+            player.UpdatePlayerData(2);
             Assert.AreEqual(2, player.TotalGuesses);
         }
         [TestMethod()]
@@ -28,7 +28,8 @@ namespace CleanCodeLabUnitTest
         {
             player.TotalGuesses = 4;
             player.NumberOfGamesPlayed = 2;
-            double result = player.Average();
+            player.CalculateAverageScore();
+            double result = player.AverageScore;
             Assert.IsInstanceOfType(result, typeof(double));
         }
         [TestMethod()]
@@ -36,7 +37,8 @@ namespace CleanCodeLabUnitTest
         {
             player.TotalGuesses = 4;
             player.NumberOfGamesPlayed = 2;
-            double result = player.Average();
+            player.CalculateAverageScore();
+            double result = player.AverageScore;
             Assert.AreEqual(2, result);
         }
         [TestMethod]

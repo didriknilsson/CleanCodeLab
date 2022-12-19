@@ -39,14 +39,14 @@ namespace CleanCodeLab
             foreach (var score in scoreList)
             {
                 PlayerData playerData = ParsePlayerAndScore(score);
-                int pos = leaderBoard.IndexOf(playerData);
-                if (pos < 0)
+                int position = leaderBoard.IndexOf(playerData);
+                if (position < 0)
                 {
                     leaderBoard.Add(playerData);
                 }
                 else
                 {
-                    leaderBoard[pos].Update(playerData.TotalGuesses);
+                    leaderBoard[position].UpdatePlayerData(playerData.TotalGuesses);
                 }
             }
 
@@ -56,7 +56,11 @@ namespace CleanCodeLab
 
         public List<PlayerData> CalculateLeaderBoard(List<PlayerData> leaderBoard)
         {
-            leaderBoard.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            foreach(PlayerData player in leaderBoard)
+            {
+                player.CalculateAverageScore();
+            }
+            leaderBoard.Sort((p1, p2) => p1.AverageScore.CompareTo(p2.AverageScore));
             return leaderBoard;
         }
 

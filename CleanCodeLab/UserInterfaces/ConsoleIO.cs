@@ -19,21 +19,21 @@ namespace CleanCodeLab
             return Console.ReadLine();
         }
 
-        public void OutputGameNames(List<string> output)
+        public void OutputGameNames(List<string> names)
         {
-            IEnumerator enumerator = output.GetEnumerator();
+            IEnumerator enumerator = names.GetEnumerator();
             while(enumerator.MoveNext())
             {
                 Console.WriteLine(enumerator.Current);
             }
         }
 
-        public void OutputLeaderBoard(List<PlayerData> output)
+        public void OutputLeaderBoard(List<PlayerData> leaderBoard)
         {
             Console.WriteLine("Player   games average");
-            foreach (PlayerData p in output)
+            foreach (PlayerData player in leaderBoard)
             {
-                Console.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumberOfGamesPlayed, p.Average()));
+                Console.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", player.Name, player.NumberOfGamesPlayed, player.AverageScore));
             }
         }
 

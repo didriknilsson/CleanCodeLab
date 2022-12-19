@@ -26,7 +26,7 @@ namespace CleanCodeLabUnitTest
         public void CreateGamesWithGameFactory()
         {
             GameFactory gameFactory = new GameFactory(ui);
-            Assert.IsNotNull(gameFactory._gameList);
+            Assert.IsNotNull(gameFactory.GameList);
         }
         [TestMethod]
         public void TestGetGamesNames()

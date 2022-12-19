@@ -23,37 +23,34 @@ namespace CleanCodeLab.Games
             if (playerGuess.Length < 4)
                 playerGuess += "    ";
             _numberOfGuesses++;
-            int correct = 0;
-            int almostCorrect = 0;
-
-            char[] modifiedTargetToGuessCopy = _targetToGuess.ToCharArray();
+            int correct = 0, almostCorrect = 0;
+            char[] modifiedTargetToGuess = _targetToGuess.ToCharArray();
 
             for (int i = 0; i < 4; i++)
             {
                 if (playerGuess[i] == _targetToGuess[i])
                 {
                     correct++;
-                    modifiedTargetToGuessCopy[i] = '-';
+                    modifiedTargetToGuess[i] = '-';
                 }
             }
 
             for (int i = 0; i < 4; i++)
             {
-                if (modifiedTargetToGuessCopy.Contains(playerGuess[i]))
+                if (modifiedTargetToGuess.Contains(playerGuess[i]))
                 {
                     almostCorrect++;
-                    modifiedTargetToGuessCopy[Array.IndexOf(modifiedTargetToGuessCopy, playerGuess[i])] = '-';
+                    modifiedTargetToGuess[Array.IndexOf(modifiedTargetToGuess, playerGuess[i])] = '-';
                 }
             }
             return new string('R', correct) + "," + new string('W', almostCorrect);            
         }
-
         
 
         public void CreateTargetToGuess()
         {
             Random random = new Random();
-            _targetToGuess = string.Join("", Enumerable.Range(1, 4).Select(x => random.Next(1, 7)));          
+            _targetToGuess = string.Join("", Enumerable.Range(1, 4).Select(digit => random.Next(1, 7)));          
         }
 
         public int PlayGame()
@@ -64,13 +61,12 @@ namespace CleanCodeLab.Games
             CreateTargetToGuess();
             _ui.Output("Welcome to mastermind! A 4 digit number between the numbers 1 to 6 has randomly been generated. Note that the same digit can appear multiply times. Your task will be to guess the correct number. Good luck!");
             _ui.Output("R will indicate right guess, W will indicate right guess wrong place.");
-            Console.WriteLine("For practice, number is: " + _targetToGuess); // DENNA SKA BORT INNAINLÄMNING
 
             do
             {
                 string playerGuess = _ui.Input().Trim();
-                string redAndWhites = CheckGuess(playerGuess);
-                _ui.Output(redAndWhites);
+                string redsAndWhites = CheckGuess(playerGuess);
+                _ui.Output(redsAndWhites);
                 continueGame = ShouldGameContinue(playerGuess);
 
             } while (continueGame);

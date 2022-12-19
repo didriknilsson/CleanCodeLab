@@ -9,17 +9,17 @@ namespace CleanCodeLab.Factories
 {
     public class GameFactory
     {
-        public List<IGame> _gameList { get; set; } = new List<IGame>();
+        public List<IGame> GameList { get; set; } = new List<IGame>();
         public GameFactory(IUI ui)
         {
-            _gameList.Add(new Moo(ui));
-            _gameList.Add(new MasterMind(ui)); 
+            GameList.Add(new Moo(ui));
+            GameList.Add(new MasterMind(ui)); 
         }
         public List<string> GetGameNames()
         {
             List<string> names = new List<string>();
 
-            foreach(IGame game in _gameList)
+            foreach(IGame game in GameList)
             {
                 names.Add(game.Name);
             }
@@ -27,7 +27,7 @@ namespace CleanCodeLab.Factories
         }
         public IGame? CheckIfGameExists(string chosenGame)
         {
-            IGame? game = _gameList.Where(x => x.Name.ToLower() == chosenGame).FirstOrDefault();
+            IGame? game = GameList.Where(x => x.Name.ToLower() == chosenGame).FirstOrDefault();
             return game;
         }
     }

@@ -90,7 +90,7 @@ namespace CleanCodeLabUnitTest
             List<PlayerData> resultLeaderBoard = _dataHandler.ConvertToLeaderBoard(scoreList);
             List<PlayerData> expectedLeaderBoard = new List<PlayerData>();
             PlayerData player1 = new PlayerData("amanda", 2);
-            player1.Update(1);
+            player1.UpdatePlayerData(1);
             PlayerData player2 = new PlayerData("didrik", 2);
             expectedLeaderBoard.Add(player1);
             expectedLeaderBoard.Add(player2);
@@ -102,20 +102,20 @@ namespace CleanCodeLabUnitTest
         {
             List<PlayerData> scoreBoard = new List<PlayerData>();
             PlayerData player1 = new PlayerData("amanda", 2);
-            player1.Update(1);
+            player1.UpdatePlayerData(1);
             PlayerData player2 = new PlayerData("didrik", 2);
             PlayerData player3 = new PlayerData("oscar", 5);
-            player3.Update(2);
+            player3.UpdatePlayerData(2);
             scoreBoard.Add(player3);
             scoreBoard.Add(player2);
             scoreBoard.Add(player1);
 
             List<PlayerData> expectedScoreBoard = new List<PlayerData>();
             PlayerData excpectedPlayer1 = new PlayerData("amanda", 2);
-            excpectedPlayer1.Update(1);
+            excpectedPlayer1.UpdatePlayerData(1);
             PlayerData excpectedPlayer2 = new PlayerData("didrik", 2);
             PlayerData excpectedPlayer3 = new PlayerData("oscar", 5);
-            excpectedPlayer3.Update(2);         
+            excpectedPlayer3.UpdatePlayerData(2);         
             expectedScoreBoard.Add(excpectedPlayer1);
             expectedScoreBoard.Add(excpectedPlayer2);
             expectedScoreBoard.Add(excpectedPlayer3);

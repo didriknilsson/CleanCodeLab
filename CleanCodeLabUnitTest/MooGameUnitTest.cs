@@ -10,7 +10,6 @@ namespace CleanCodeLabUnitTest
     {
         Moo _moo;
         string _playerGuess = "";
-        //string _targetToGuess = "";
         [TestInitialize]
         public void MooGameTestInitialize()
         {
@@ -18,7 +17,6 @@ namespace CleanCodeLabUnitTest
             IUI ui = new ConsoleIO();
             _moo = new Moo(ui);
             _playerGuess = "1234";
-            //_targetToGuess = "1256";
         }
 
         [TestMethod()]
@@ -30,13 +28,14 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void MooGameCheckedGuessReturnsBOrC()
         {
-            _moo.CreateTargetToGuess();
+            _moo._targetToGuess = "3456";
             StringAssert.Matches(_moo.CheckGuess(_playerGuess), new Regex(@"^[BC,]+$"));
         }
         [TestMethod()]
         public void TestMooGameShouldGameContiune()
-        {            
-            Assert.AreEqual(_moo.ShouldGameContinue("BBBB,"), false);
+        {
+            _moo._targetToGuess = "1234";
+            Assert.AreEqual(_moo.ShouldGameContinue(_playerGuess), false);
         }
     }
 }
