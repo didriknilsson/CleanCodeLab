@@ -20,7 +20,7 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void TestUpdate()
         {
-            player.UpdatePlayerData(2);
+            player.AddGameResult(2);
             Assert.AreEqual(2, player.TotalGuesses);
         }
         [TestMethod()]
