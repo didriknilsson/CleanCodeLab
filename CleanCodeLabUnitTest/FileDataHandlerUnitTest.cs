@@ -77,7 +77,7 @@ namespace CleanCodeLabUnitTest
         [TestMethod()]
         public void TestScoreParserPlayerName()
         {
-            string testscore = $"amanda{_fileDataHandler}3";
+            string testscore = $"amanda{_fileDataHandler.seperator}3";
             PlayerData actualPlayerData = _fileDataHandler.ParsePlayerAndScore(testscore);
             PlayerData expectedPlayerData = new PlayerData("amanda", 3);
             Assert.AreEqual(expectedPlayerData.Name, actualPlayerData.Name);
