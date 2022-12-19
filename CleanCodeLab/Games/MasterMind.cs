@@ -20,48 +20,40 @@ namespace CleanCodeLab.Games
 
         public string CheckGuess(string playerGuess)
         {
-            //Increase the number of guesses the player has made
+            if (playerGuess.Length < 4)
+                playerGuess += "    ";
             _numberOfGuesses++;
-            // Keep track of the number of correct and almost correct digits
             int correct = 0;
             int almostCorrect = 0;
 
-            // Make a copy of the secret code that we can modify
-            char[] targetToGuessCopy = _targetToGuess.ToCharArray();
+            char[] modifiedTargetToGuessCopy = _targetToGuess.ToCharArray();
 
-            // Check the guess
-            for (int i = 0; i < playerGuess.Length; i++)
+            for (int i = 0; i < 4; i++)
             {
                 if (playerGuess[i] == _targetToGuess[i])
                 {
-                    // This digit is correct
                     correct++;
-                    targetToGuessCopy[i] = '-';
+                    modifiedTargetToGuessCopy[i] = '-';
                 }
             }
 
-            for (int i = 0; i < playerGuess.Length; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if (targetToGuessCopy.Contains(playerGuess[i]))
+                if (modifiedTargetToGuessCopy.Contains(playerGuess[i]))
                 {
-                    // This digit is almost correct
                     almostCorrect++;
-                    targetToGuessCopy[Array.IndexOf(targetToGuessCopy, playerGuess[i])] = '-';
+                    modifiedTargetToGuessCopy[Array.IndexOf(modifiedTargetToGuessCopy, playerGuess[i])] = '-';
                 }
             }
-            string result = $"{correct} are correct, {almostCorrect} are almost correct only in the wrong order";
-            return result;
-            
+            return new string('R', correct) + "," + new string('W', almostCorrect);            
         }
 
         
 
         public void CreateTargetToGuess()
         {
-            // Generate a random code of 4 integers between 1 and 6 as a string
             Random random = new Random();
-            _targetToGuess = string.Join("", Enumerable.Range(1, 4).Select(x => random.Next(1, 7)));
-          
+            _targetToGuess = string.Join("", Enumerable.Range(1, 4).Select(x => random.Next(1, 7)));          
         }
 
         public int PlayGame()
@@ -70,14 +62,15 @@ namespace CleanCodeLab.Games
             bool continueGame;
             _ui.Output("New game:");
             CreateTargetToGuess();
-            _ui.Output("Welcome to mastermind\nA 4 digit number between the numbers 1 to 6 has randomly been generated. Note that the same digit can appear multiply times.\nYour task will be to guess the correct number\nGood luck!");
+            _ui.Output("Welcome to mastermind! A 4 digit number between the numbers 1 to 6 has randomly been generated. Note that the same digit can appear multiply times. Your task will be to guess the correct number. Good luck!");
+            _ui.Output("R will indicate right guess, W will indicate right guess wrong place.");
             Console.WriteLine("For practice, number is: " + _targetToGuess); // DENNA SKA BORT INNAINLÄMNING
 
             do
             {
                 string playerGuess = _ui.Input().Trim();
-                string blacksAndWhites = CheckGuess(playerGuess);
-                _ui.Output(blacksAndWhites);
+                string redAndWhites = CheckGuess(playerGuess);
+                _ui.Output(redAndWhites);
                 continueGame = ShouldGameContinue(playerGuess);
 
             } while (continueGame);
@@ -92,12 +85,6 @@ namespace CleanCodeLab.Games
             else
                 return true;
         }
-    }
-    public enum GuessStage
-    {
-        Black,
-        White,
-        Wrong
     }
 }
 
